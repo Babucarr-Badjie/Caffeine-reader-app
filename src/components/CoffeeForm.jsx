@@ -3,6 +3,13 @@ import { coffeeOptions } from "../utils/index";
 export default function CoffeeForm() {
   const [selectedCoffee, setSelectedCoffee] = useState(null);
   const [showCoffeeTypes, setShowCoffeeTypes] = useState(false);
+  const [coffeeCost, setCoffeeCost] = useState(0);
+  const [hourInput, setHourInput] = useState(0);
+  const [minuteInput, setMinuteInput] = useState(0);
+
+  function handleSubmit() {
+    console.log(selectedCoffee, coffeeCost, hourInput, minuteInput);
+  }
 
   return (
     <>
@@ -44,7 +51,13 @@ export default function CoffeeForm() {
         </button>
       </div>
       {showCoffeeTypes && (
-        <select name="coffee-list" id="coffee-list">
+        <select
+          name="coffee-list"
+          id="coffee-list"
+          onChange={(event) => {
+            setSelectedCoffee(event.target.value);
+          }}
+        >
           <option value={null}>Select type</option>
           {coffeeOptions.map((option, optionIndex) => {
             return (
@@ -56,12 +69,28 @@ export default function CoffeeForm() {
         </select>
       )}
       <h4>Add the cost ($)</h4>
-      <input type="number" className="w-full" placeholder="e.g. 4.50" min="0" />
+      <input
+        type="number"
+        className="w-full"
+        placeholder="e.g. 4.50"
+        min="0"
+        value={coffeeCost}
+        onChange={(event) => {
+          setCoffeeCost(event.target.value);
+        }}
+      />
       <h4>Time since consumption</h4>
       <div className="time-entry">
         <div>
           <h6>Hours</h6>
-          <select name="hours-select" id="hours-select">
+          <select
+            name="hours-select"
+            id="hours-select"
+            value={hourInput}
+            onChange={(e) => {
+              setHourInput(e.target.value);
+            }}
+          >
             {[
               0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
               19, 20, 21, 22, 23,
@@ -76,7 +105,14 @@ export default function CoffeeForm() {
         </div>
         <div>
           <h6>Minutes</h6>
-          <select name="mins-select" id="mins-select">
+          <select
+            name="mins-select"
+            id="mins-select"
+            value={minuteInput}
+            onChange={(e) => {
+              setMinuteInput(e.target.value);
+            }}
+          >
             {[
               0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
               19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
@@ -92,7 +128,7 @@ export default function CoffeeForm() {
           </select>
         </div>
       </div>
-      <button>
+      <button onClick={handleSubmit}>
         <p>Add Entry</p>
       </button>
     </>
