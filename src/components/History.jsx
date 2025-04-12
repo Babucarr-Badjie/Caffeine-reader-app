@@ -26,7 +26,7 @@ export default function History() {
             const remainingAmount = calculateCurrentCaffeineLevel({
               [utcTime]: coffee,
             });
-            const summary = `${coffee.name} | ${timeSinceConsume} | ${coffee.cost} | ${originalAmount}mg / ${remainingAmount}mg`;
+            const summary = `${coffee.name} | ${timeSinceConsume} | $${coffee.cost} | ${remainingAmount}mg / ${originalAmount}mg `;
 
             return (
               <div key={coffeeIndex} title={summary}>
