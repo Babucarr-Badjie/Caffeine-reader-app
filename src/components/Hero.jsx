@@ -5,6 +5,7 @@ export default function Hero() {
         Coffee Tracking for Coffee{" "}
         <abbr title="An enthusiast or devotee">Fiends</abbr>!
       </h1>
+
       <div className="benefits-list">
         <h3 className="font-bolder">
           Try
