@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
+// import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Authentication() {
   const [isRegistration, setIsRegistration] = useState(false);
@@ -6,7 +8,33 @@ export default function Authentication() {
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  async function handleAuthenticate() {}
+  const { signup, login } = useAuth();
+  async function handleAuthenticate() {
+    if (
+      !email ||
+      !email.includes("@") ||
+      !password ||
+      !password.length < 6 ||
+      isAuthenticating
+    ) {
+      return;
+    }
+    try {
+      setIsAuthenticating(true);
+
+      if (isRegistration) {
+        // register a user
+        await signup(email, password);
+      } else {
+        // login a user
+        await login(email, password);
+      }
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setIsAuthenticating(false);
+    }
+  }
   return (
     <>
       <h2 className="sign-up-text">{isRegistration ? "Sign Up" : "Login"}</h2>
@@ -28,7 +56,7 @@ export default function Authentication() {
         placeholder="********"
       />
       <button onClick={handleAuthenticate}>
-        <p>Submit</p>
+        <p>{isAuthenticating ? "Authenticating..." : " Submit"}</p>
       </button>
       <hr />
       <div className="register-content">
