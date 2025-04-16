@@ -6,7 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { createContext } from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -51,8 +51,8 @@ export function AuthProvider(props) {
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("CURRENT USER ", user);
-      setGlobalData(user);
+      console.log("CURRENT USER: ", user);
+      setGlobalUser(user);
       // if there's no user, empty the user state and return from this listener
       if (!user) {
         console.log("No active user");
@@ -71,8 +71,8 @@ export function AuthProvider(props) {
         const docSnap = await getDoc(docRef);
         let firebaseData = {};
         if (docSnap.exists()) {
-          console.log("Found user data");
           firebaseData = docSnap.data();
+          console.log("Found user data");
         }
         setGlobalData(firebaseData);
       } catch (err) {

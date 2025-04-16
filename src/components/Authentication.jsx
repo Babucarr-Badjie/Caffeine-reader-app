@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../context/useAuth";
 // import { useAuth } from "../context/AuthContext.jsx";
 
-export default function Authentication() {
+export default function Authentication(props) {
+  const { handleCloseModal } = props;
   const [isRegistration, setIsRegistration] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ export default function Authentication() {
       !email ||
       !email.includes("@") ||
       !password ||
-      !password.length < 6 ||
+      password.length < 6 ||
       isAuthenticating
     ) {
       return;
@@ -29,6 +30,7 @@ export default function Authentication() {
         // login a user
         await login(email, password);
       }
+      handleCloseModal();
     } catch (err) {
       console.log(err.message);
     } finally {
