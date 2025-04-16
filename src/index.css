@@ -50,6 +50,9 @@ h2 {
 .benefits-list h3 {
   padding-bottom: 0.5rem;
 }
+.benefits-list p {
+  font-size: 1.2em;
+}
 
 .info-card {
   font-size: 0.8rem;
@@ -66,6 +69,9 @@ h2 {
 
 .info-card i {
   font-size: 1.2rem;
+}
+.info-card p {
+  font-size: 1.3em;
 }
 
 .hero-info {
