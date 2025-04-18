@@ -8,6 +8,7 @@ export default function Authentication(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [error, setError] = useState(null);
 
   const { signup, login } = useAuth();
   async function handleAuthenticate() {
@@ -22,6 +23,7 @@ export default function Authentication(props) {
     }
     try {
       setIsAuthenticating(true);
+      setError(null);
 
       if (isRegistration) {
         // register a user
@@ -33,6 +35,10 @@ export default function Authentication(props) {
       handleCloseModal();
     } catch (err) {
       console.log(err.message);
+      // setError(err.message);
+      setError(
+        "Failed to Authenticate! Please check your email and password again"
+      );
     } finally {
       setIsAuthenticating(false);
     }
@@ -43,6 +49,7 @@ export default function Authentication(props) {
       <p>
         {isRegistration ? "Create an account!" : "Sign in to your account!"}
       </p>
+      {error && <p>❌ {error}</p>}
       <input
         type="text"
         value={email}

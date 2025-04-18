@@ -17,6 +17,15 @@ export default function CoffeeForm(props) {
       setShowModal(true);
       return;
     }
+
+    // define a guard clause that only submits the form if it is completed
+
+    // then wer're going to create a new data object
+
+    // update the global state
+
+    // persist the data in the firebase firestore
+    
     console.log(selectedCoffee, coffeeCost, hourInput, minuteInput);
   }
 
