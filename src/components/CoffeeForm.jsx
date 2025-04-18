@@ -2,6 +2,9 @@ import { useState } from "react";
 import { coffeeOptions } from "../utils/index";
 import Modal from "./Modal";
 import Authentication from "./Authentication";
+import { useAuth } from "../context/useAuth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 export default function CoffeeForm(props) {
   const [selectedCoffee, setSelectedCoffee] = useState(null);
   const [showCoffeeTypes, setShowCoffeeTypes] = useState(false);
@@ -12,21 +15,56 @@ export default function CoffeeForm(props) {
 
   const { isAuthenticated } = props;
 
-  function handleSubmit() {
+  const { globalData, setGlobalData, globalUser } = useAuth();
+
+  async function handleSubmit() {
     if (!isAuthenticated) {
       setShowModal(true);
       return;
     }
 
     // define a guard clause that only submits the form if it is completed
+    if (!selectedCoffee) {
+      return;
+    }
 
-    // then wer're going to create a new data object
+    try {
+      // then wer're going to create a new data object
+      const newGlobalData = {
+        ...(globalData || {}),
+      };
 
-    // update the global state
+      const timeNow = Date.now();
 
-    // persist the data in the firebase firestore
-    
-    console.log(selectedCoffee, coffeeCost, hourInput, minuteInput);
+      const timeToSubtract =
+        hourInput * 60 * 60 * 1000 + minuteInput * 60 * 1000;
+
+      const timestamp = timeNow - timeToSubtract;
+
+      const newData = { name: selectedCoffee, cost: coffeeCost };
+      newGlobalData[timestamp] = newData;
+
+      console.log(timestamp, selectedCoffee, coffeeCost);
+      // update the global state
+      setGlobalData(newGlobalData);
+      // persist the data in the firebase firestore
+
+      const userRef = doc(db, "users", globalUser.uid);
+      const res = await setDoc(
+        userRef,
+        {
+          [timestamp]: newData,
+        },
+        { merge: true }
+      );
+
+      setSelectedCoffee(null);
+      setHourInput(0);
+      setMinuteInput(0);
+      setCoffeeCost(0);
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   return (
